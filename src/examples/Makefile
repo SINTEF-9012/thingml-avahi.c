@@ -8,16 +8,22 @@ LIBS = -lavahi-client -lavahi-common
 
 CFLAGS = -g -O2
 
-SRCS = client-publish-service.c
-OBJS = client-publish-service.o
+SRCS = client-publish-service-threaded.c
+OBJS = client-publish-service-threaded.o
 
-all : client-publish-service
+SRCS1 = client-publish-service.c
+OBJS1 = client-publish-service.o
 
+all : client-publish-service-threaded client-publish-service
+ 
 .c.o :
 	${CC} ${CFLAGS} ${includedir} -c $< 
 
-client-publish-service : $(OBJS)
+client-publish-service-threaded : $(OBJS)
 	$(CC) -o $@ $(OBJS) $(LIBS) ${libdir} -lm
 
+client-publish-service : $(OBJS1)
+	$(CC) -o $@ $(OBJS1) $(LIBS) ${libdir} -lm
+
 clean:
-	rm -f *.o *~ client-publish-service
+	rm -f *.o *~ client-publish-service-threaded client-publish-service
