@@ -25,21 +25,19 @@ int main(int argc, char* argv[]) {
 	int ch;
 	ThingMLAvahiService* service_data = malloc(sizeof(ThingMLAvahiService));
 
-	service_data->fn_srv_esteb_callback = callback_success;
-	service_data->fn_srv_failure_callback = callback_failuer;
-
-	service_data->name = "MegaPrinter";
-	service_data->type = "_ipp._tcp";
-	service_data->port = 651,
-	service_data->txt = "test=blah";
-
-
 	do {
 		printf("waiting for input...\n");
 		ch = getchar();
 
 		switch(ch) {
 			case 's' : {
+				service_data->fn_srv_esteb_callback = callback_success;
+				service_data->fn_srv_failure_callback = callback_failuer;
+
+				service_data->name = "MegaPrinter";
+				service_data->type = "_ipp._tcp";
+				service_data->port = 651,
+				service_data->txt = "test=blah";
 				printf("starting...\n");
 				start_dnssd_service(service_data);
 			}; break;
@@ -52,6 +50,6 @@ int main(int argc, char* argv[]) {
 	} while(ch != 'q');
 
 
-
+	free(service_data);
 	return 0;
 }

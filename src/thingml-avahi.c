@@ -33,7 +33,7 @@
 void create_services(ThingMLAvahiService *service);
 
 void entry_group_callback(AvahiEntryGroup *g, AvahiEntryGroupState state, AVAHI_GCC_UNUSED void *userdata) {
-	assert(userdata == NULL);
+	assert(userdata);
 
 	ThingMLAvahiService* context = (ThingMLAvahiService*) userdata;
 
