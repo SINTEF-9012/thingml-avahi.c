@@ -194,6 +194,7 @@ void client_callback(AvahiClient *c, AvahiClientState state, AVAHI_GCC_UNUSED vo
 
 void start_dnssd_service(ThingMLAvahiService* service_data) {
 	int error;
+	service_data->name = avahi_strdup(service_data->name);
 
     /* Allocate main loop object */
     if (!(service_data->threaded_poll = avahi_threaded_poll_new())) {
