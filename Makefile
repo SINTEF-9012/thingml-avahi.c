@@ -2,23 +2,30 @@ prefix = /home/vassik/avahiinstall
 includedir = -I${prefix}/include
 libdir = -L${prefix}/lib
 
-CC = gcc
+CROSS_COMPILE =
+
+GCC = $(CROSS_COMPILE)gcc
+AR = $(CROSS_COMPILE)ar
 LIBS = -lavahi-client -lavahi-common
-#CFLAGS = -g -O2 -fstack-protector -std=c99 -Wall -W -Wextra -pedantic -pipe -Wformat -Wold-style-definition -Wdeclaration-after-statement -Wfloat-equal -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls -Wmissing-noreturn -Wshadow -Wendif-labels -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -fdiagnostics-show-option -Wno-cast-qual -fno-strict-aliasing
 
 CFLAGS = -g -O2
 
-EXP_SRCS = ./src/examples/client-publish-service.c
-EXP_OBJS = ./src/examples/client-publish-service.o
-EXP_BIN = ./src/examples/client-publish-service
+SRCS = ./src/thingml-avahi.c
+OBJS = ./src/thingml-avahi.o
 
-all : client-publish-service
+STATIC_LIB_LOCATION = ./src/libtmlavahi.a
+DYNAMIC_LIB_LOCATION = ./src/libtmlavahi.so
 
-.c.o :
-	${CC} ${CFLAGS} ${includedir} -c $< 
+.o : .c
+	$(GCC) $(GFLAGS) ${includedir} -c -o $@ $<
 
-client-publish-service : $(EXP_OBJS)
-	$(CC) -o $@ $(EXP_OBJS) $(LIBS) ${libdir} -lm
+all : staticlib dynamiclib
 
+staticlib : $(OBJS)
+	$(AR) crs $(STATIC_LIB_LOCATION) $(OBJS)
+
+dynamiclib : $(OBJS)
+	$(GCC) -shared -rdynamic -o $(DYNAMIC_LIB_LOCATION) $(OBJS)
+	
 clean:
-	rm -f $(EXP_OBJS) $(EXP_BIN)
+	rm -rf *.o $(STATIC_LIB_LOCATION) $(DYNAMIC_LIB_LOCATION)

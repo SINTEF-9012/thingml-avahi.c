@@ -19,21 +19,21 @@ extern "C" {
 typedef void (*pthingmlAvahiCallback)(void* _instance, ...);
 
 typedef struct {
-	char* name = NULL;
-	const char* type = NULL;
-	const char* domain = NULL;
-	const char* host = NULL;
-	uint16_t port = 0;
-	const char* txt = NULL;
+	char* name;
+	const char* type;
+	const char* domain;
+	const char* host;
+	uint16_t port;
+	const char* txt;
 
-	pthingmlAvahiCallback fn_srv_esteb_callback = NULL;
-	pthingmlAvahiCallback fn_srv_failure_callback = NULL;
+	pthingmlAvahiCallback fn_srv_esteb_callback;
+	pthingmlAvahiCallback fn_srv_failure_callback;
 
-	void* thing_instance = NULL;
+	void* thing_instance;
 
-	AvahiClient* client = NULL;
-	AvahiEntryGroup* group = NULL;
-	AvahiThreadedPoll* threaded_poll = NULL;
+	AvahiClient* client;
+	AvahiEntryGroup* group;
+	AvahiThreadedPoll* threaded_poll;
 
 } ThingMLAvahiService;
 

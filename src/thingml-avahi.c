@@ -26,7 +26,7 @@
 #include <avahi-common/timeval.h>
 #include <avahi-common/thread-watch.h>
 
-#include "thingml-avahi-utility.h";
+#include "thingml-avahi-utility.h"
 #include "thingml-avahi.h"
 
 
@@ -64,7 +64,7 @@ void entry_group_callback(AvahiEntryGroup *g, AvahiEntryGroupState state, AVAHI_
             fprintf(stderr, "Service name collision, renaming service to '%s'\n", context->name);
 
             /* And recreate the services */
-            create_services(avahi_entry_group_get_client(g));
+            create_services(context);
         }; break;
 
         case AVAHI_ENTRY_GROUP_FAILURE : {
@@ -86,7 +86,7 @@ void entry_group_callback(AvahiEntryGroup *g, AvahiEntryGroupState state, AVAHI_
 }
 
 void create_services(ThingMLAvahiService *service) {
-	char *n;
+	char *n, r[128];
     int ret;
     assert(service->client);
 
@@ -107,7 +107,7 @@ void create_services(ThingMLAvahiService *service) {
 
 
         /* Add the service */
-        if ((ret = avahi_entry_group_add_service(service->group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, 0, service->name, service->type, service->domain, service->host, service->port, service->txt)) < 0) {
+        if ((ret = avahi_entry_group_add_service(service->group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, 0, service->name, service->type, service->domain, service->host, service->port, service->txt, r, NULL)) < 0) {
 
             if (ret == AVAHI_ERR_COLLISION)
                 goto collision;
@@ -135,7 +135,7 @@ collision:
 
     fprintf(stderr, "Service name collision, renaming service to '%s'\n", service->name);
 
-    avahi_entry_group_reset(service->name);
+    avahi_entry_group_reset(service->group);
 
     create_services(service);
     return;
