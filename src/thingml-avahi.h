@@ -15,9 +15,18 @@
 extern "C" {
 #endif
 
-void start_dnssd_service(ThingMLAvahiService* service_data);
 
-void stop_dnssd_service(ThingMLAvahiService* service_data);
+void start_avahi_client(ThingMLThreadedAhvaiClient* client_data);
+
+void stop_avahi_client(ThingMLThreadedAhvaiClient* client_data);
+
+void add_dnssd_service(ThingMLAvahiService* service);
+
+void remove_dnssd_service(ThingMLAvahiService* service);
+
+ThingMLAvahiService* constructThingMLAvahiService();
+
+void distructThingMLAvahiService(ThingMLAvahiService** service_data);
 
 
 #ifdef __cplusplus

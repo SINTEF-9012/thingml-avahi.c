@@ -18,6 +18,23 @@ extern "C" {
 
 typedef void (*pthingmlAvahiCallback)(void* _instance, ...);
 
+typedef enum {
+	THINGML_AVAHI_SERVICE_UNPUBLISH,
+	THINGML_AVAHI_SERVICE_PUBLISH,
+	THINGML_AVAHI_SERVICE_NOT_INIT
+} ThingMLServiceState;
+
+typedef struct {
+	AvahiClient* client;
+	AvahiThreadedPoll* threaded_poll;
+
+	pthingmlAvahiCallback fn_client_failure_callback;
+	pthingmlAvahiCallback fn_client_running_callback;
+
+	void* thing_instance;
+
+} ThingMLThreadedAhvaiClient;
+
 typedef struct {
 	char* name;
 	const char* type;
@@ -31,11 +48,12 @@ typedef struct {
 
 	void* thing_instance;
 
-	AvahiClient* client;
 	AvahiEntryGroup* group;
-	AvahiThreadedPoll* threaded_poll;
+	ThingMLServiceState state;
+	ThingMLThreadedAhvaiClient* avahi_client;
 
 } ThingMLAvahiService;
+
 
 #ifdef __cplusplus
 }
