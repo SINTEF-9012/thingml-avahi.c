@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 
 		switch(ch) {
 			case 's' : {
-				avahi_client = malloc(sizeof(ThingMLThreadedAhvaiClient));
+				avahi_client = constructThingMLThreadedAhvaiClient();
 				avahi_client->fn_client_running_callback = fn_client_running_callback;
 				avahi_client->fn_client_failure_callback = fn_client_failure_callback;
 				start_avahi_client(avahi_client);
@@ -51,12 +51,9 @@ int main(int argc, char* argv[]) {
 
 			case 'e' : {
 				stop_avahi_client(avahi_client);
-				free(avahi_client);
-				if(service_data)
-					free(service_data);
-
-				if(service_data1)
-					free(service_data1);
+				distructThingMLAvahiService(&service_data);
+				distructThingMLAvahiService(&service_data1);
+				distructThingMLThreadedAhvaiClient(&avahi_client);
 			}; break;
 
 			case '1' : {

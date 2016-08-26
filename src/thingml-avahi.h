@@ -28,6 +28,10 @@ ThingMLAvahiService* constructThingMLAvahiService();
 
 void distructThingMLAvahiService(ThingMLAvahiService** service_data);
 
+ThingMLThreadedAhvaiClient* constructThingMLThreadedAhvaiClient();
+
+void distructThingMLThreadedAhvaiClient(ThingMLThreadedAhvaiClient** client_data);
+
 
 #ifdef __cplusplus
 }

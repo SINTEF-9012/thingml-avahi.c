@@ -131,6 +131,9 @@ void client_callback(AvahiClient *c, AvahiClientState state, AVAHI_GCC_UNUSED vo
 }
 
 void start_avahi_client(ThingMLThreadedAhvaiClient* client_data) {
+	if(client_data == NULL)
+		return;
+
 	int error;
 
     /* Allocate main loop object */
@@ -153,6 +156,9 @@ void start_avahi_client(ThingMLThreadedAhvaiClient* client_data) {
 }
 
 void stop_avahi_client(ThingMLThreadedAhvaiClient* client_data) {
+	if(client_data == NULL)
+		return;
+
 	if(client_data->threaded_poll)
 		avahi_threaded_poll_stop(client_data->threaded_poll);
 
@@ -204,7 +210,8 @@ void add_dnssd_service(ThingMLAvahiService *service) {
 }
 
 void remove_dnssd_service(ThingMLAvahiService *service) {
-	assert(service != NULL);
+	if(service == NULL)
+		return;
 
 	if(service->state == THINGML_AVAHI_SERVICE_PUBLISH) {
 		avahi_entry_group_reset(service->group);
@@ -232,6 +239,27 @@ ThingMLAvahiService* constructThingMLAvahiService() {
 }
 
 void distructThingMLAvahiService(ThingMLAvahiService** service_data) {
+	if(*service_data == NULL)
+		return;
+
 	free(*service_data);
 	*service_data = NULL;
+}
+
+ThingMLThreadedAhvaiClient* constructThingMLThreadedAhvaiClient() {
+	ThingMLThreadedAhvaiClient* client = malloc(sizeof(ThingMLThreadedAhvaiClient));
+	client->client = NULL;
+	client->threaded_poll = NULL;
+	client->thing_instance = NULL;
+	client->fn_client_failure_callback = NULL;
+	client->fn_client_running_callback = NULL;
+	return client;
+}
+
+void distructThingMLThreadedAhvaiClient(ThingMLThreadedAhvaiClient** client_data) {
+	if(*client_data == NULL)
+		return;
+
+	free(*client_data);
+	*client_data = NULL;
 }
