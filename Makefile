@@ -18,11 +18,17 @@ EXP_SRC = ./src/examples/thingml-avahi-example.c
 EXP_OBJ = ./src/examples/thingml-avahi-example.o
 EXP_BIN = ./src/examples/thingml-avahi-example
 
-STATIC_LIB_LOCATION = ./src/libtmlavahi.a
-DYNAMIC_LIB_LOCATION = ./src/libtmlavahi.so
+STATIC_LIB_NAME = libtmlavahi.a
+DYNAMIC_LIB_NAME = libtmlavahi.so
+
+STATIC_LIB_LOCATION = ./src/$(STATIC_LIB_NAME)
+DYNAMIC_LIB_LOCATION = ./src/$(DYNAMIC_LIB_NAME)
 
 LIB_THL_AHAVI = -ltmlavahi
 LIB_THL_AHAVI_DIR = -L./src
+
+INSTALL_LIB_DIR = /usr/local/lib
+INCLUDE_DIR = /usr/local/include
 
 %.o : %.c
 	$(GCC) $(GFLAGS) ${INCLUDE_DIR} -c -o $@ $<
@@ -43,3 +49,16 @@ dynamiclib : $(OBJS)
 	
 clean:
 	rm -rf *.o $(STATIC_LIB_LOCATION) $(DYNAMIC_LIB_LOCATION) $(EXP_OBJ) $(OBJS) $(EXP_BIN)
+
+install: staticlib dynamiclib
+	install $(STATIC_LIB_LOCATION) $(INSTALL_LIB_DIR)
+	install $(DYNAMIC_LIB_LOCATION) $(INSTALL_LIB_DIR)
+	cp -r ./src/thingml-avahi.h $(INCLUDE_DIR)
+	cp -r ./src/thingml-avahi-utility.h $(INCLUDE_DIR)
+	ldconfig
+
+uninstall:
+	rm -rf $(INCLUDE_DIR)/thingml-avahi.h
+	rm -rf $(INCLUDE_DIR)/thingml-avahi-utility.h
+	rm -rf $(INSTALL_LIB_DIR)/$(STATIC_LIB_NAME)
+	rm -rf $(INSTALL_LIB_DIR)/$(DYNAMIC_LIB_NAME)
