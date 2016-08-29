@@ -173,6 +173,11 @@ void add_dnssd_service(ThingMLAvahiService *service) {
 	char r[128];
     int ret;
 
+    if(service->state == THINGML_AVAHI_SERVICE_PUBLISH) {
+    	fprintf(stderr, "add_dnssd_service() service is already published\n");
+    	return;
+    }
+
     char* name = avahi_strdup(service->name);
 
     avahi_threaded_poll_lock(service->avahi_client->threaded_poll);
