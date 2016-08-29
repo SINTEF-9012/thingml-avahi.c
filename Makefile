@@ -30,6 +30,8 @@ LIB_THL_AHAVI_DIR = -L./src
 INSTALL_LIB_DIR = /usr/local/lib
 INCLUDE_DIR = /usr/local/include
 
+THINGML_AVAHI_ADAP_INSTALL_DIR = thingml-avahi
+
 %.o : %.c
 	$(GCC) $(GFLAGS) ${INCLUDE_DIR} -c -o $@ $<
 
@@ -53,12 +55,11 @@ clean:
 install: staticlib dynamiclib
 	install $(STATIC_LIB_LOCATION) $(INSTALL_LIB_DIR)
 	install $(DYNAMIC_LIB_LOCATION) $(INSTALL_LIB_DIR)
-	cp -r ./src/thingml-avahi.h $(INCLUDE_DIR)
-	cp -r ./src/thingml-avahi-utility.h $(INCLUDE_DIR)
+	install -d $(INCLUDE_DIR)/$(THINGML_AVAHI_ADAP_INSTALL_DIR)
+	cp -r ./src/*.h $(INCLUDE_DIR)/$(THINGML_AVAHI_ADAP_INSTALL_DIR)
 	ldconfig
 
 uninstall:
-	rm -rf $(INCLUDE_DIR)/thingml-avahi.h
-	rm -rf $(INCLUDE_DIR)/thingml-avahi-utility.h
+	rm -rf $(INCLUDE_DIR)/$(THINGML_AVAHI_ADAP_INSTALL_DIR)
 	rm -rf $(INSTALL_LIB_DIR)/$(STATIC_LIB_NAME)
 	rm -rf $(INSTALL_LIB_DIR)/$(DYNAMIC_LIB_NAME)

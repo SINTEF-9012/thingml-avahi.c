@@ -97,7 +97,7 @@ void client_callback(AvahiClient *c, AvahiClientState state, AVAHI_GCC_UNUSED vo
             /* The server has startup successfully and registered its host
              * name on the network, so it's time to create our services */
         	if(client_data->fn_client_running_callback)
-        		client_data->fn_client_running_callback(client_data->thing_instance);
+        		client_data->fn_client_running_callback(client_data->thing_instance, client_data);
 
         }; break;
 
@@ -106,7 +106,7 @@ void client_callback(AvahiClient *c, AvahiClientState state, AVAHI_GCC_UNUSED vo
             fprintf(stderr, "Client failure: %s\n", avahi_strerror(avahi_client_errno(c)));
 
             if(client_data->fn_client_failure_callback)
-            	client_data->fn_client_failure_callback(client_data->thing_instance);
+            	client_data->fn_client_failure_callback(client_data->thing_instance, client_data);
 
         }; break;
 
