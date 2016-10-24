@@ -170,7 +170,6 @@ void stop_avahi_client(ThingMLThreadedAhvaiClient* client_data) {
 }
 
 void add_dnssd_service(ThingMLAvahiService *service) {
-	char r[128];
     int ret;
 
     if(service->state == THINGML_AVAHI_SERVICE_PUBLISH) {
@@ -201,8 +200,7 @@ void add_dnssd_service(ThingMLAvahiService *service) {
     avahi_threaded_poll_unlock(service->avahi_client->threaded_poll);
 
     /* Add the service */
-    if ((ret = avahi_entry_group_add_service(service->group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, 0, service->name, service->type, service->domain, service->host, service->port, service->txt, r, NULL)) < 0) {
-
+    if ((ret = avahi_entry_group_add_service(service->group, AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC, 0, service->name, service->type, service->domain, service->host, service->port, service->txt, NULL)) < 0) {
         if (ret == AVAHI_ERR_COLLISION)
         	fprintf(stderr, "Failed to add  service AVAHI_ERR_COLLISION: %s\n", avahi_strerror(ret));
 
