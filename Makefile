@@ -8,7 +8,7 @@ GCC = $(CROSS_COMPILE)gcc
 AR = $(CROSS_COMPILE)ar
 LIBS = -lavahi-client -lavahi-common
 
-GFLAGS = -O0 -g3 -Wall
+GFLAGS = -O0 -g3 -Wall -fPIC
 #GFLAGS =
 
 SRCS = ./src/thingml-avahi.c
